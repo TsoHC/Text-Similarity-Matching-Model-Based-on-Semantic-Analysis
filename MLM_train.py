@@ -13,10 +13,10 @@ model_name = sys.argv[1]
 per_device_train_batch_size = 64
 
 save_steps = 1000  # Save model every 1k steps
-num_train_epochs = 3  # Number of epochs
-use_fp16 = False  # Set to True, if your GPU supports FP16 operations
-max_length = 100  # Max length for a text input
-do_whole_word_mask = True  # If set to true, whole words are masked
+num_train_epochs = 20  # Number of epochs
+use_fp16 = False
+max_length = 10000  # Max length for a text input
+do_whole_word_mask = True
 mlm_prob = 0.15  # Probability that a word is replaced by a [MASK] token
 
 # Load the model
@@ -27,8 +27,6 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 output_dir = "output/{}-{}".format(model_name.replace("/", "_"), datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
 print("Save checkpoints to:", output_dir)
 
-
-##### Load our training datasets
 
 train_sentences = []
 train_path = sys.argv[2]
@@ -56,7 +54,6 @@ if len(sys.argv) >= 4:
 print("Dev sentences:", len(dev_sentences))
 
 
-# A dataset wrapper, that tokenizes our data on-the-fly
 class TokenizedSentencesDataset:
     def __init__(self, sentences, tokenizer, max_length, cache_tokenization=False):
         self.tokenizer = tokenizer
@@ -96,7 +93,6 @@ dev_dataset = (
 )
 
 
-##### Training arguments
 
 if do_whole_word_mask:
     data_collator = DataCollatorForWholeWordMask(tokenizer=tokenizer, mlm=True, mlm_probability=mlm_prob)
@@ -120,6 +116,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model, args=training_args, data_collator=data_collator, train_dataset=train_dataset, eval_dataset=dev_dataset
 )
+
 
 print("Save tokenizer to:", output_dir)
 tokenizer.save_pretrained(output_dir)
