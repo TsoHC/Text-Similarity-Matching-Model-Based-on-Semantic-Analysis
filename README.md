@@ -60,9 +60,24 @@ Each script will generate the corresponding model files in the `output` director
 
 After training, you can use the evaluation functions provided by the sentence-transformers library to assess the performance of the models. Please refer to the official documentation of the sentence-transformers library for specific evaluation methods.
 
+## Graphical User Interface (GUI)
+
+In addition to the command-line scripts, this project also includes a simple GUI interface built using QT Designer. To launch the GUI, run the `UImain.py` script:
+
+```
+python UImain.py
+```
+
+The GUI interface consists of two main components:
+1. Input Box: Enter keywords or related paper titles in this box.
+2. Output Box: After entering the input, the output box will display the top 10 most similar paper titles along with their similarity scores.
+
+The GUI provides a user-friendly way to interact with the trained models and retrieve the most relevant paper titles based on the provided input.
+
 ## Notes
 
 1. The training process may consume a large amount of GPU resources. Please ensure that you have sufficient hardware support.
 2. The training time may vary for different methods. Please be patient and wait for the training to complete.
 3. If you encounter any issues during the training process, please check the dataset path, dependency library versions, and other relevant settings.
+4. The GUI interface is a basic implementation and may have limitations. Feel free to enhance and customize the interface based on your specific requirements.
 
